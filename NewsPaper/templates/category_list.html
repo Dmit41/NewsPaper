@@ -1,0 +1,96 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block content %}
+
+    <h3> Все посты категории: {{ category }}</h3>
+    <hr>
+
+    {% if is_not_subscriber %}
+        <p class="text-center"><a href="{% url 'add_subs' category.id %}"
+                                  class="btn btn-secondary btn-sm">Подписаться</a></p>
+    {% else %}
+        <p class="text-center"><a href="{% url 'del_subs' category.id %}"
+                                  class="btn btn-secondary btn-sm">Отписаться</a></p>
+    {% endif %}
+
+   {% if category_news_list %}
+    <style type="text/css">
+       TABLE {
+        width: 1300px; /* Ширина таблицы */
+        border-collapse: collapse; /* Убираем двойные линии между ячейками */
+       }
+       TD, TH {
+        padding: 3px; /* Поля вокруг содержимого таблицы */
+        border: 2px solid black; /* Параметры рамки */
+       }
+    </style>
+
+    <table>
+        <tr>
+            <td>Категория</td>
+            <td>Заголовок</td>
+            <td>Дата</td>
+            <td>Текст</td>
+
+            {% if perms.news.change_news or perms.news.delete_news %}
+                <td>Действия</td>
+            {% endif %}
+
+        </tr>
+
+        {% for news in category_news_list %}
+        <tr>
+            <td>
+                <a href="{% url 'category_list' category.id %}" >{{ category }}</a>
+                {% if is_not_subscriber %}
+                    <p class="text-center"><a href="{% url 'add_subs' category.id %}"
+                                              class="btn btn-secondary btn-sm">Подписаться</a></p>
+                {% else %}
+                    <p class="text-center"><a href="{% url 'del_subs' category.id %}"
+                                              class="btn btn-secondary btn-sm">Отписаться</a></p>
+                {% endif %}
+            </td>
+            <td>{{ news.title }}</td>
+            <td>{{ news.dateCreation }}</td>
+            <td>{{ news.text|truncatewords:20|censor:"борьбу"|censor:"ограбили"|censor:"умерщвляли" }}</td>
+
+            <td>
+                {% if perms.news.change_news %}
+                <a href="{% url 'post_update' pk=news.id %}">Изменить /</a>
+                {% endif %}
+                {% if perms.news.delete_news %}
+                <a href="{% url 'post_delete' news.id %}">Удалить</a>
+                {% endif %}
+            </td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+   {% else %}
+       <h2>Постов нет!</h2>
+   {% endif %}
+
+    {% if page_obj.has_previous %}
+        <a href="?{% url_replace page=1 %}">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+   {% endif %}
+
+   {{ page_obj.number }}
+
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+            ...
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+
+
+{% endblock content %}
