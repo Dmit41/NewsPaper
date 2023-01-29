@@ -7,3 +7,6 @@ class NewsConfig(AppConfig):
 
     def ready(self):
         from . import signals
+
+        # from .tasks import send_mail
+        # from .scheduler import news_scheduler

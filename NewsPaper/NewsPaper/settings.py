@@ -16,10 +16,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-# Application definition
-
-
 SITE_URL = 'HTTP://127.0.0.1:8000'
 
 EMAIL_HOST = 'smtp.mail.ru'
@@ -59,6 +55,7 @@ INSTALLED_APPS = [
     'news.apps.NewsConfig',
     'accounts',
     'django_filters',
+    'django_apscheduler',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
