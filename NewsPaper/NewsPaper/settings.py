@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'news',
     'accounts',
-    'mc_donalds',
     'django_filters',
     'allauth',
     'allauth.account',
