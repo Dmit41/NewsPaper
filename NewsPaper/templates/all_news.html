@@ -4,14 +4,19 @@
 {% load custom_tags %}
 
 {% block content %}
+    {% if perms.news %}
+        <h3>Здравствуйте {{ user.username }}!</h3>
+    {% else %}
+        <h3>Здравствуйте Гость!</h3>
+    {% endif %}
 
     <h3>Все посты</h3>
 
-    {% if perms.news.add_news %}
+    {% if perms.news.add_post %}
     <a href="{% url 'news_create' %}"
        class="btn btn-secondary btn-sm">Добавить новость</a>
     {% endif %}
-    {% if perms.news.add_news %}
+    {% if perms.news.add_post %}
     <a href="{% url 'articles_create' %}"
        class="btn btn-secondary btn-sm">Добавить статью</a>
     {% endif %}
@@ -39,7 +44,7 @@
             <td>Дата</td>
             <td>Текст</td>
 
-            {% if perms.news.change_news or perms.news.delete_news %}
+            {% if perms.news.change_post or perms.news.delete_post %}
                 <td>Действия</td>
             {% endif %}
 
@@ -59,11 +64,11 @@
             <td>{{ news.text|truncatewords:20|censor:"борьбу"|censor:"ограбили"|censor:"умерщвляли" }}</td>
 
             <td>
-                {% if perms.news.change_news %}
-                <a href="{% url 'post_update' pk=news.id %}">Изменить /</a>
+                {% if perms.news.change_post %}
+                    <a href="{% url 'post_update' pk=news.id %}">Изменить /</a>
                 {% endif %}
-                {% if perms.news.delete_news %}
-                <a href="{% url 'post_delete' news.id %}">Удалить</a>
+                {% if perms.news.delete_post %}
+                    <a href="{% url 'post_delete' news.id %}">Удалить</a>
                 {% endif %}
             </td>
 
