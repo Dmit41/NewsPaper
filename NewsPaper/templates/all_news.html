@@ -2,6 +2,7 @@
 
 {% load custom_filters %}
 {% load custom_tags %}
+{% load cache %}
 
 {% block content %}
     {% if perms.news %}
@@ -12,14 +13,16 @@
 
     <h3>Все посты</h3>
 
-    {% if perms.news.add_post %}
-    <a href="{% url 'news_create' %}"
-       class="btn btn-secondary btn-sm">Добавить новость</a>
-    {% endif %}
-    {% if perms.news.add_post %}
-    <a href="{% url 'articles_create' %}"
-       class="btn btn-secondary btn-sm">Добавить статью</a>
-    {% endif %}
+    {% cache 30 menu %}
+        {% if perms.news.add_post %}
+        <a href="{% url 'news_create' %}"
+           class="btn btn-secondary btn-sm">Добавить новость</a>
+        {% endif %}
+        {% if perms.news.add_post %}
+        <a href="{% url 'articles_create' %}"
+           class="btn btn-secondary btn-sm">Добавить статью</a>
+        {% endif %}
+    {% endcache %}
 
     <hr>
 
