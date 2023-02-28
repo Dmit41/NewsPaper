@@ -16,7 +16,6 @@ from .filters import NewsFilter
 from .forms import NewsForm
 
 
-
 class PostList(ListView):
     model = Post
     ordering = '-dateCreation'
@@ -48,13 +47,12 @@ class NewsDetail(DetailView):
 
     def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
         obj = cache.get(f'post-{self.kwargs["pk"]}',
-                        None)  # кэш очень похож на словарь, и метод get действует так же. Он забирает значение по ключу, если его нет, то забирает None.
+                        None)
 
         # если объекта нет в кэше, то получаем его и записываем в кэш
         if not obj:
             obj = super().get_object(queryset=self.queryset)
             cache.set(f'post-{self.kwargs["pk"]}', obj)
-
         return obj
 
 

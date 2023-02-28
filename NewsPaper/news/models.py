@@ -5,7 +5,6 @@ from django.urls import reverse
 from django.core.cache import cache
 
 
-
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
     ratingAuthor = models.SmallIntegerField(default=0)
