@@ -172,3 +172,99 @@ ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 
 APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'style': '{',
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'general', 'warning'],
+            'level': 'DEBUG',
+        },
+        'django.security': {
+            'handlers': ['mail_admins', 'security'],
+            'level': 'DEBUG',
+        },
+        'django.request': {
+            'handlers': ['mail_admins', 'errors'],
+            'level': 'ERROR',
+        }
+    },
+    'formatters': {
+        'debug': {
+            'format': '{asctime} {levelname} {message}',
+            'datetime': '%m.%d %H:%M:%S',
+            'style': '{',
+        },
+        'general': {
+            'format': '{asctime} {levelname} {module} {message}',
+            'datetime': '%m.%d %H:%M:%S',
+            'style': '{',
+        },
+        'warning': {
+            'format': '{asctime} {pathname} {levelname} {message}',
+            'datetime': '%m.%d %H:%M:%S',
+            'style': '{',
+        },
+        'errors': {
+            'format': '{asctime} {exc_info} {pathname} {levelname} {message}',
+            'datetime': '%m.%d %H:%M:%S',
+            'style': '{',
+        },
+        'errors_for_mail': {
+            'format': '{asctime} {pathname} {levelname} {message}',
+            'datetime': '%m.%d %H:%M:%S',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'debug'
+        },
+        'warning': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'warning'
+        },
+        'errors': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'errors'
+        },
+        'general': {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'formatter': 'general',
+            'filename': 'general.log'
+        },
+        'security': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.FileHandler',
+            'formatter': 'general',
+            'filename': 'security.log'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'errors_for_mail',
+        }
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+}
