@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load i18n %}
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -25,21 +26,21 @@
        <div class="collapse navbar-collapse" id="navbarResponsive">
            <ul class="navbar-nav ml-auto">
                <li class="nav-item active">
-                   <a class="nav-link" href="#">Home
+                   <a class="nav-link" href="/post/">Home
                        <span class="sr-only">(current)</span>
                    </a>
                </li>
                <li class="nav-item">
-                   <a class="nav-link" href="/accounts/login/">Войти</a>
+                   <a class="nav-link" href="/accounts/login/">{% trans 'Войти' %}</a>
                </li>
                <li class="nav-item">
-                   <a class="nav-link" href="/accounts/logout/">Выйти</a>
+                   <a class="nav-link" href="/accounts/logout/">{% trans 'Выйти' %}</a>
                </li>
                <li class="nav-item">
-                   <a class="nav-link" href="/post/">Все Посты</a>
+                   <a class="nav-link" href="/post/">{% trans 'Все Посты' %}</a>
                </li>
                <li class="nav-item">
-                   <a class="nav-link" href="/post/search">Поиск</a>
+                   <a class="nav-link" href="/post/search">{% trans 'Поиск'%}</a>
                </li>
            </ul>
        </div>

@@ -3,12 +3,29 @@
 {% load custom_filters %}
 {% load custom_tags %}
 {% load cache %}
+{% load i18n %}
 
 {% block content %}
+        <form action="{% url 'set_language' %}" method="POST"> {% csrf_token %} <!-- Не забываем по csrf_token для POST запросов -->
+            <input type="hidden" name="next" value="{{ redirect_to }}">
+            {% get_current_language as LANGUAGE_CODE %}
+
+            <select name="language" id="">
+                {% get_available_languages as LANGUAGES %} <!-- получаем языки -->
+                {% get_language_info_list for LANGUAGES as languages %} <!-- Помещаем их в список languages -->
+
+                {% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
+                    <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                        {{ language.name_local }} - {{ language.code }}
+                    </option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="set">
+        </form>
     {% if perms.news %}
-        <h3>Здравствуйте {{ user.username }}!</h3>
+        <h3>{% trans 'Здравствуйте' %} {{ user.username }}!</h3>
     {% else %}
-        <h3>Здравствуйте Гость!</h3>
+        <h3>{% trans 'Здравствуйте Гость' %}!</h3>
     {% endif %}
 
     <h3>Все посты</h3>
@@ -40,15 +57,12 @@
 
     <table>
         <tr>
-            <td>Категория
-
-            </td>
-            <td>Заголовок</td>
-            <td>Дата</td>
-            <td>Текст</td>
-
+            <td>{% trans 'Категория' %}</td>
+            <td>{% trans 'Заголовок' %}</td>
+            <td>{% trans 'Дата' %}</td>
+            <td>{% trans 'Текст' %}</td>
             {% if perms.news.change_post or perms.news.delete_post %}
-                <td>Действия</td>
+                <td>{% trans 'Действия' %}</td>
             {% endif %}
 
         </tr>
@@ -68,10 +82,10 @@
 
             <td>
                 {% if perms.news.change_post %}
-                    <a href="{% url 'post_update' pk=news.id %}">Изменить /</a>
+                    <a href="{% url 'post_update' pk=news.id %}">{% trans 'Изменить' %} /</a>
                 {% endif %}
                 {% if perms.news.delete_post %}
-                    <a href="{% url 'post_delete' news.id %}">Удалить</a>
+                    <a href="{% url 'post_delete' news.id %}">{% trans 'Удалить' %}</a>
                 {% endif %}
             </td>
 
